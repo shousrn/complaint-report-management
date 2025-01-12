@@ -23,4 +23,13 @@ public class UserController {
         }
         return null; // Return null if no matching user is found
     }
+
+    public int getUserIdByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
+                return user.getUserId();
+            }
+        }
+        return -1; // User not found
+    }
 }
