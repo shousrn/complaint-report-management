@@ -13,152 +13,158 @@ public class CLI {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("------Complaint Reporting System---------");
-        System.out.println("1. Register");
-        System.out.println("2. Login");
-        System.out.print("Enter your choice: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
 
-        User loggedInUser = null; // To store the logged-in user object
+        // Main loop to keep the system running
+        while (true) {
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        if (choice == 1) {
-            // Register user
-            System.out.print("Enter your name: ");
-            String name = scanner.nextLine();
+            User loggedInUser = null; // To store the logged-in user object
 
-            System.out.print("Enter your email: ");
-            String email = scanner.nextLine();
+            if (choice == 1) {
+                // Register user
+                System.out.print("Enter your name: ");
+                String name = scanner.nextLine();
 
-            System.out.print("Enter your password: ");
-            String password = scanner.nextLine();
+                System.out.print("Enter your email: ");
+                String email = scanner.nextLine();
 
-            System.out.print("Enter your address: ");
-            String address = scanner.nextLine();
+                System.out.print("Enter your password: ");
+                String password = scanner.nextLine();
 
-            System.out.print("Enter your role (User/Admin): "); // Prompt for role
-            String role = scanner.nextLine();
+                System.out.print("Enter your address: ");
+                String address = scanner.nextLine();
 
-            userController.registerUser(name, email, password, address, role); // Add user with role
-            System.out.println("User registered successfully!");
+                System.out.print("Enter your role (User/Admin): "); // Prompt for role
+                String role = scanner.nextLine();
 
-            loggedInUser = userController.loginUser(email, password); // Automatically log in the user
-        } else if (choice == 2) {
-            // Login user
-            System.out.print("Enter your email: ");
-            String email = scanner.nextLine();
+                userController.registerUser(name, email, password, address, role); // Add user with role
+                System.out.println("User registered successfully!");
 
-            System.out.print("Enter your password: ");
-            String password = scanner.nextLine();
+                loggedInUser = userController.loginUser(email, password); // Automatically log in the user
+            } else if (choice == 2) {
+                // Login user
+                System.out.print("Enter your email: ");
+                String email = scanner.nextLine();
 
-            loggedInUser = userController.loginUser(email, password); // Attempt login
+                System.out.print("Enter your password: ");
+                String password = scanner.nextLine();
 
-            if (loggedInUser != null) {
-                System.out.println("Login successful! Welcome, " + loggedInUser.getName());
-            } else {
-                System.out.println("Invalid credentials. Exiting...");
-                scanner.close();
-                return;
-            }
-        } else {
-            System.out.println("Invalid choice. Exiting...");
-            scanner.close();
-            return;
-        }
+                loggedInUser = userController.loginUser(email, password); // Attempt login
 
-        // Role-based menu after login
-        boolean keepRunning = true;
-
-        while (keepRunning) {
-            if (loggedInUser.getRole().equalsIgnoreCase("Admin")) {
-                // Admin menu
-                System.out.println("\n------Admin Menu---------");
-                System.out.println("1. View All Complaints");
-                System.out.println("2. Update Complaint Status");
-                System.out.println("3. Logout");
-                System.out.print("Enter your choice: ");
-                int adminChoice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
-
-                switch (adminChoice) {
-                    case 1:
-                        // View all complaints
-                        System.out.println("All Complaints:");
-                        complaintManager.getComplaintsByStatus("Pending").forEach(c -> {
-                            System.out.println("ID: " + c.getComplaintId() + ", Category: " + c.getCategory() +
-                                    ", Status: " + c.getStatus() + ", Location: " + c.getLocation());
-                        });
-                        break;
-
-                    case 2:
-                        // Update complaint status
-                        System.out.print("Enter Complaint ID: ");
-                        int complaintId = scanner.nextInt();
-                        scanner.nextLine(); // Consume newline
-
-                        System.out.print("Enter new status (Pending, In Progress, Resolved): ");
-                        String newStatus = scanner.nextLine();
-
-                        if (complaintManager.updateComplaintStatus(complaintId, newStatus)) {
-                            System.out.println("Complaint status updated successfully!");
-                        } else {
-                            System.out.println("Invalid complaint ID.");
-                        }
-                        break;
-
-                    case 3:
-                        // Logout
-                        keepRunning = false;
-                        System.out.println("Logging out...");
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
+                if (loggedInUser != null) {
+                    System.out.println("Login successful! Welcome, " + loggedInUser.getName());
+                } else {
+                    System.out.println("Invalid credentials.");
+                    continue; // Return to main menu if login fails
                 }
+            } else if (choice == 3) {
+                System.out.println("Thank you for using commuNect.");
+                break; 
             } else {
-                // Regular user menu
-                System.out.println("\n------User Menu---------");
-                System.out.println("1. File a Complaint");
-                System.out.println("2. View My Complaints");
-                System.out.println("3. Logout");
-                System.out.print("Enter your choice: ");
-                int userChoice = scanner.nextInt();
-                scanner.nextLine(); // Consume newline
+                System.out.println("Invalid choice. Please try again.");
+                continue; 
+            }
 
-                switch (userChoice) {
-                    case 1:
-                        // File a complaint
-                        System.out.print("Enter complaint category: ");
-                        String category = scanner.nextLine();
+            // Role-based menu after login
+            boolean keepRunning = true;
 
-                        System.out.print("Enter complaint description: ");
-                        String description = scanner.nextLine();
+            while (keepRunning) {
+                if (loggedInUser.getRole().equalsIgnoreCase("Admin")) {
+                    // Admin menu
+                    System.out.println("\n------Admin Menu---------");
+                    System.out.println("1. View All Complaints");
+                    System.out.println("2. Update Complaint Status");
+                    System.out.println("3. Logout");
+                    System.out.print("Enter your choice: ");
+                    int adminChoice = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
 
-                        System.out.print("Enter location of the complaint: ");
-                        String location = scanner.nextLine();
+                    switch (adminChoice) {
+                        case 1:
+                            // View all complaints
+                            System.out.println("All Complaints:");
+                            complaintManager.getComplaintsByStatus("Pending").forEach(c -> {
+                                System.out.println("ID: " + c.getComplaintId() + ", Category: " + c.getCategory() +
+                                        ", Status: " + c.getStatus() + ", Location: " + c.getLocation());
+                            });
+                            break;
 
-                        complaintManager.addComplaint(loggedInUser.getUserId(), category, description, location);
-                        System.out.println("Complaint filed successfully!");
-                        break;
+                        case 2:
+                            // Update complaint status
+                            System.out.print("Enter Complaint ID: ");
+                            int complaintId = scanner.nextInt();
+                            scanner.nextLine(); // Consume newline
 
-                    case 2:
-                        // View user complaints
-                        System.out.println("Your Complaints:");
-                        complaintManager.getComplaintsByUserId(loggedInUser.getUserId()).forEach(c -> {
-                            System.out.println("ID: " + c.getComplaintId() + ", Category: " + c.getCategory() +
-                                    ", Status: " + c.getStatus());
-                        });
-                        break;
+                            System.out.print("Enter new status (Pending, In Progress, Resolved): ");
+                            String newStatus = scanner.nextLine();
 
-                    case 3:
-                        // Logout
-                        keepRunning = false;
-                        System.out.println("Logging out...");
-                        break;
+                            if (complaintManager.updateComplaintStatus(complaintId, newStatus)) {
+                                System.out.println("Complaint status updated successfully!");
+                            } else {
+                                System.out.println("Invalid complaint ID.");
+                            }
+                            break;
 
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
+                        case 3:
+                            // Logout
+                            keepRunning = false;
+                            System.out.println("Logging out...");
+                            break;
+
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
+                    }
+                } else {
+                    // Regular user menu
+                    System.out.println("\n------User Menu---------");
+                    System.out.println("1. File a Complaint");
+                    System.out.println("2. View My Complaints");
+                    System.out.println("3. Logout");
+                    System.out.print("Enter your choice: ");
+                    int userChoice = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+
+                    switch (userChoice) {
+                        case 1:
+                            // File a complaint
+                            System.out.print("Enter complaint category: ");
+                            String category = scanner.nextLine();
+
+                            System.out.print("Enter complaint description: ");
+                            String description = scanner.nextLine();
+
+                            System.out.print("Enter location of the complaint: ");
+                            String location = scanner.nextLine();
+
+                            complaintManager.addComplaint(loggedInUser.getUserId(), category, description, location);
+                            System.out.println("Complaint filed successfully!");
+                            break;
+
+                        case 2:
+                            // View user complaints
+                            System.out.println("Your Complaints:");
+                            complaintManager.getComplaintsByUserId(loggedInUser.getUserId()).forEach(c -> {
+                                System.out.println("ID: " + c.getComplaintId() + "\nCategory: " + c.getCategory() +
+                                        "\nStatus: " + c.getStatus());
+                            });
+                            break;
+
+                        case 3:
+                            // Logout
+                            keepRunning = false;
+                            System.out.println("Logging out...");
+                            break;
+
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
+                    }
                 }
             }
         }

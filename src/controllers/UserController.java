@@ -10,8 +10,8 @@ public class UserController {
 
     // Method to register a new user
     public void registerUser(String name, String email, String password, String address, String role) {
-        User user = new User(userIdCounter++, name, email, password, address, role);
-        users.add(user);
+        User user = new User(userIdCounter++, name, email, password, address, role); 
+        users.add(user); // Add the newly created user to the users list
     }
 
     // Method to handle user login
@@ -31,5 +31,10 @@ public class UserController {
             }
         }
         return -1; // User not found
+    }
+
+    // Optional: Method to retrieve the list of users for debugging
+    public List<User> getUsers() {
+        return users;
     }
 }

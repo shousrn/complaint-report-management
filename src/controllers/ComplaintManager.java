@@ -69,12 +69,14 @@ public class ComplaintManager {
     }
 
     // Update the status of a complaint
+    // Update complaint status
     public boolean updateComplaintStatus(int complaintId, String newStatus) {
-        Complaint complaint = getComplaintById(complaintId);
-        if (complaint != null) {
-            complaint.updateStatus(newStatus);
-            return true; // Status updated successfully
+        for (Complaint complaint : complaints) {
+            if (complaint.getComplaintId() == complaintId) {
+                complaint.setStatus(newStatus);  // Update the status
+                return true;
+            }
         }
-        return false; // Complaint not found
+        return false;  // Return false if no complaint with the given ID
     }
 }
