@@ -9,8 +9,8 @@ public class UserController {
     private static int userIdCounter = 1;
 
     // Method to register a new user
-    public void registerUser(String name, String email, String password, String address) {
-        User user = new User(userIdCounter++, name, email, password, address);
+    public void registerUser(String name, String email, String password, String address, String role) {
+        User user = new User(userIdCounter++, name, email, password, address, role);
         users.add(user);
     }
 

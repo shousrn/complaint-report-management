@@ -6,14 +6,16 @@ public class User {
     private String email;
     private String password;
     private String address;
+    private String role; 
 
     // Constructor to initialize the user object
-    public User(int userId, String name, String email, String password, String address) {
+    public User(int userId, String name, String email, String password, String address, String role) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.password = password;
         this.address = address;
+        this.role = role; 
     }
 
     public int getUserId() {
@@ -56,8 +58,17 @@ public class User {
         this.address = address;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     // Method to check if the provided credentials match the user
     public boolean login(String email, String password) {
         return this.email.equals(email) && this.password.equals(password);
     }
 }
+
