@@ -61,7 +61,11 @@ public class Complaint {
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        if (status.equals(STATUS_PENDING) || status.equals(STATUS_IN_PROGRESS) || status.equals(STATUS_RESOLVED)) {
+            this.status = status;
+        } else {
+                throw new IllegalArgumentException("Invalid status: " + status); // Throw exception for invalid status
+            }
     }
 
     public String getLocation() {
@@ -70,14 +74,5 @@ public class Complaint {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    // Method to update the status with validation
-    public void updateStatus(String newStatus) {
-        if (newStatus.equals(STATUS_PENDING) || newStatus.equals(STATUS_IN_PROGRESS) || newStatus.equals(STATUS_RESOLVED)) {
-            this.status = newStatus;
-        } else {
-            throw new IllegalArgumentException("Invalid status: " + newStatus);
-        }
     }
 }

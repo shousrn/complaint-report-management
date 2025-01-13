@@ -1,5 +1,5 @@
 package controllers;
-
+ 
 import models.Complaint;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +68,11 @@ public class ComplaintManager {
         return null; 
     }
 
-    // Update the status of a complaint
     // Update complaint status
     public boolean updateComplaintStatus(int complaintId, String newStatus) {
+        if (!newStatus.equals(Complaint.STATUS_PENDING) && !newStatus.equals(Complaint.STATUS_IN_PROGRESS) && !newStatus.equals(Complaint.STATUS_RESOLVED)) {
+            return false; // Invalid status
+        }
         for (Complaint complaint : complaints) {
             if (complaint.getComplaintId() == complaintId) {
                 complaint.setStatus(newStatus);  // Update the status
